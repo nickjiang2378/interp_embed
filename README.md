@@ -1,6 +1,6 @@
 # InterpEmbed
 
-`interp_embed` is a toolkit for analyzing unstructured (ex. text) datasets with sparse autoencoders (SAEs). It can quickly compute and efficiently store feature activations for data analysis. Given a dataset of documents, `interp_embed` creates sparse, high-dimensional, interpretable embeddings, where each dimension maps to a concept like syntax or topic, for a variety of downstream analysis tasks like dataset diffing, concept correlations, and directed clustering.
+`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to explore large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, concept correlation, and targeted clustering.
 
 ## Setup
 
