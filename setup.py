@@ -1,0 +1,35 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="interp_embed",
+    version="0.1.0",
+    packages=find_packages(),
+    install_requires=[
+        "goodfire==0.3.4",
+        "python-dotenv==1.0.1",
+        "pandas==2.2.3",
+        "scikit-learn==1.6.1",
+        "ipykernel",
+        "tqdm==4.67.1",
+        "openai>=1.0.0",
+        "scipy>=1.10.0",
+        "numpy>=1.24.0",
+        "torch>=2.0.0",
+        "transformers>=4.30.0",
+        "sae-lens>=3.0.0",
+        "transformer-lens>=1.0.0",
+        "huggingface-hub>=0.16.0",
+        "pydantic>=2.0.0",
+    ],
+    author="Nick Jiang",
+    description="Toolkit for analyzing unstructured datasets with sparse autoencoders",
+    python_requires=">=3.10",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+    ],
+)
