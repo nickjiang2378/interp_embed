@@ -5,6 +5,7 @@
 ## Setup
 
 After cloning this repository, proceed with either option:
+
 **With uv (recommended):**
 ```bash
 uv sync  # To install uv, see https://docs.astral.sh/uv/getting-started/installation/
