@@ -6,10 +6,13 @@ build-backend = "setuptools.build_meta"
 name = "interp_embed"
 version = "0.1.0"
 description = "Toolkit for analyzing unstructured datasets with sparse autoencoders"
+readme = "README.md"
+license = "MIT"
 authors = [
     {name = "Nick Jiang"}
 ]
 requires-python = ">=3.10"
+keywords = ["sparse-autoencoders", "sae", "interpretability", "machine-learning", "dataset-analysis", "embeddings"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -17,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 dependencies = [
@@ -38,4 +42,4 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["interp_embed", "interp_embed.saes"]
+packages = ["interp_embed", "interp_embed.saes", "interp_embed.llm", "interp_embed.utils"]

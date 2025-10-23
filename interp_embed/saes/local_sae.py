@@ -108,13 +108,13 @@ class GoodfireSAE(BaseSAE):
     )
     # Mapping of variant names to associated config
     variant_configs = {
-        "Llama-3.3-70B-Instruct-SAE-l50": {
-            "hf_model": "meta-llama/Llama-3.3-70B-Instruct",
-            "goodfire_release": "Goodfire/Llama-3.3-70B-Instruct-SAE-l50",
-            "sae_id": "Llama-3.3-70B-Instruct-SAE-l50.pt",
-            "feature_labels_file": "goodfire/meta-llama/Llama-3.3-70B-Instruct.json",
-            "device_map": self.model_device
-        },
+        # "Llama-3.3-70B-Instruct-SAE-l50": {
+        #     "hf_model": "meta-llama/Llama-3.3-70B-Instruct",
+        #     "goodfire_release": "Goodfire/Llama-3.3-70B-Instruct-SAE-l50",
+        #     "sae_id": "Llama-3.3-70B-Instruct-SAE-l50.pt",
+        #     "feature_labels_file": "goodfire/meta-llama/Llama-3.3-70B-Instruct.json",
+        #     "device_map": self.model_device
+        # },
         "Llama-3.1-8B-Instruct-SAE-l19": {
             "hf_model": "meta-llama/Llama-3.1-8B-Instruct",
             "goodfire_release": "Goodfire/Llama-3.1-8B-Instruct-SAE-l19",

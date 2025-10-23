@@ -4,6 +4,7 @@
 
 ## Setup
 
+After cloning this repository, proceed with either option:
 **With uv (recommended):**
 ```bash
 uv sync  # To install uv, see https://docs.astral.sh/uv/getting-started/installation/
@@ -26,7 +27,7 @@ import pandas as pd
 
 # 1. Load a Goodfire SAE or SAE supported through the SAELens package
 sae = GoodfireSAE(
-    variant_name="Llama-3.1-8B-Instruct-SAE-l19",  # or "Llama-3.3-70B-Instruct-SAE-l50" for higher quality features
+    variant_name="Llama-3.1-8B-Instruct-SAE-l19",
     device="cuda:0", # optional
     quantize=True # optional
 )

@@ -5,11 +5,13 @@ import torch
 
 def process_device_config(device):
   if isinstance(device, str):
+    assert device != "auto", f"`auto` is not a valid device for the SAE. Please reformat your device config as {{ 'model': 'auto', 'sae': <sae_device> }}"
     return device, device
   elif isinstance(device, dict):
     assert set(device.keys()) == {"model", "sae"}, f"Only 'model' and 'sae' are allowed as device keys: {list(device.keys())}"
     assert isinstance(device["model"], str), f'Model device must be a string'
     assert isinstance(device["sae"], str), f"SAE device must be a string"
+    assert device["sae"] != "auto", f"`auto` is not a valid device for the SAE."
     return device["model"], device["sae"]
   else:
     raise TypeError(f"Unrecognized device type, {type(device)}")
