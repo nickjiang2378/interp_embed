@@ -1,6 +1,6 @@
 # InterpEmbed
 
-`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to explore large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, concept correlation, and targeted clustering.
+`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, concept correlation, and targeted clustering.
 
 ## Setup
 
@@ -30,13 +30,12 @@ import pandas as pd
 sae = GoodfireSAE(
     variant_name="Llama-3.1-8B-Instruct-SAE-l19",
     device="cuda:0", # optional
-    quantize=True # optional
 )
 
 # 2. Prepare your data as a DataFrame
 df = pd.DataFrame({
     "text": ["Good morning!", "Hello there!", "Good afternoon."],
-    "date": ["2022-01-10", "2021-08-23", "2023-03-14"] # Metadata column
+    "date": ["2022-01-10", "2021-08-23", "2023-03-14"]
 })
 
 # 3. Create dataset - computes and saves feature activations
