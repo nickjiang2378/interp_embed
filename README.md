@@ -1,6 +1,6 @@
 # InterpEmbed
 
-`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, concept correlation, and targeted clustering.
+`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, bias detection, and targeted clustering.
 
 ## Setup
 
