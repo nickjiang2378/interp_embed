@@ -1,6 +1,6 @@
 # InterpEmbed
 
-`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each feature in the embedding corresponds to a human-understandable concept, such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, bias detection, and targeted clustering.
+`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each dimension of the embedding corresponds to a human-understandable concept (e.g. a "feature"), such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, bias detection, and targeted clustering.
 
 ## Setup
 
@@ -23,7 +23,7 @@ First, create a dataset object. We currently support SAEs from SAELens (`LocalSA
 
 ```python
 from interp_embed import Dataset
-from interp_embed.saes import GoodfireSAE
+from interp_embed.saes.local_sae import GoodfireSAE
 import pandas as pd
 
 # 1. Load a Goodfire SAE or SAE supported through the SAELens package
@@ -72,4 +72,4 @@ For analyses (e.g. dataset diffing, correlations) done on example datasets, see 
 
 ## How does this work?
 
-To embed a document, we pass the data into a "reader" LLM and use a sparse autoencoder (SAE) to decompose its internal representation into interpretable concepts known as "features". The number of features per SAE varies from 1000 - 100000. A SAE produces a sparse, high-dimensional vector of feature activations per token that we aggregate into a single document embedding.
+To embed a document, we pass the data into a "reader" LLM and use a sparse autoencoder (SAE) to decompose its internal representation into interpretable concepts known as "features". A SAE produces a sparse, high-dimensional vector (e.g. hundreds of thousands of dimensions) of feature activations per token that we aggregate into a single document embedding.

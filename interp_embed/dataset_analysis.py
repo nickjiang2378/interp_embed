@@ -454,7 +454,7 @@ class DatasetRow():
         assert field in row, f"field {field} not found in row"
         assert len(tokenized_document) == activations.shape[0], f"Number of tokens must match number of feature activation vectors, {len(tokenized_document)} != {activations.shape[0]}"
         assert len(tokenized_document) > 0, "Empty documents not allowed!"
-        self.document = row[field]
+        self.data = row[field]
         self.field = field
         self.row = row
         self.tokenized_document = tokenized_document
@@ -505,7 +505,7 @@ class DatasetRow():
             return [{"token": token, "activation": activation.item()} for token, activation in zip(tokens, activations)]
 
     def document(self):
-        return self.document
+        return self.data
 
     def __repr__(self):
-        return f"DatasetRow('{self.document[:SAMPLE_TRUNCATION_LENGTH] + '...' if len(self.document) > SAMPLE_TRUNCATION_LENGTH else self.document}')"
+        return f"DatasetRow('{self.data[:SAMPLE_TRUNCATION_LENGTH] + '...' if len(self.data) > SAMPLE_TRUNCATION_LENGTH else self.data}')"
