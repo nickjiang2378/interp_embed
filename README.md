@@ -4,19 +4,23 @@
 
 ## Setup
 
-After cloning this repository, proceed with either option:
-
-**With uv (recommended):**
+To install:
 ```bash
-uv sync  # To install uv, see https://docs.astral.sh/uv/getting-started/installation/
+uv add git+https://github.com/nickjiang2378/interp_embed
+# or
+pip install git+https://github.com/nickjiang2378/interp_embed
 ```
 
-**Without uv (using pip):**
+For local development:
 ```bash
-pip install -r requirements.txt
+git clone git@github.com:nickjiang2378/interp_embed
+cd interp_embed
+uv sync # To install uv, see https://docs.astral.sh/uv/getting-started/installation/
+# or
+pip install -e .
 ```
 
-Create a `.env` file that has `OPENROUTER_API_KEY` and `OPENAI_KEY`. We use these models for creating feature labels if they don't exist.
+Create a `.env` file that has `OPENROUTER_API_KEY` and `OPENAI_KEY`. We use these models for creating feature labels if they don't exist. Please also sign into the hugging face cli when accessing models from gated repos (e.g. if you use GoodfireSAE, make sure to have access to Llama-3.1-8B-Instruct).
 
 ## Quickstart
 First, create a dataset object. We currently support SAEs from SAELens (`LocalSAE`) and Goodfire (`GoodfireSAE`).
@@ -29,7 +33,7 @@ import pandas as pd
 # 1. Load a Goodfire SAE or SAE supported through the SAELens package
 sae = GoodfireSAE(
     variant_name="Llama-3.1-8B-Instruct-SAE-l19",
-    device="cuda:0", # optional
+    device="cuda:0",
 )
 
 # 2. Prepare your data as a DataFrame
@@ -73,3 +77,5 @@ For analyses (e.g. dataset diffing, correlations) done on example datasets, see 
 ## How does this work?
 
 To embed a document, we pass the data into a "reader" LLM and use a sparse autoencoder (SAE) to decompose its internal representation into interpretable concepts known as "features". A SAE produces a sparse, high-dimensional vector (e.g. hundreds of thousands of dimensions) of feature activations per token that we aggregate into a single document embedding.
+
+For a brief introduction to sparse autoencoders, see [here](https://www.lesswrong.com/posts/8YnHuN55XJTDwGPMr/a-gentle-introduction-to-sparse-autoencoders) and [here](https://adamkarvonen.github.io/machine_learning/2024/06/11/sae-intuitions.html).
