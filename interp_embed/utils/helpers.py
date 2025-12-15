@@ -93,6 +93,9 @@ def token_count_as_string(tokens):
 
 def safe_save_pkl(data, path):
     dir_ = os.path.dirname(path) or "."
+    if not os.path.exists(dir_):
+        print(f"Creating directory since it doesn't exist: {dir_}")
+        os.makedirs(dir_, exist_ok=True)
     fd, tmp_path = tempfile.mkstemp(dir=dir_)
     try:
         with os.fdopen(fd, "wb") as f:

@@ -68,8 +68,8 @@ Your task:
 
 Return your answer as a JSON object with exactly these fields:
 - "label": "A concise phrase describing the property present in the positive samples (considering both context and marked tokens) but not in the negative samples."
-- "brief_description": "A sentence expanding on the label, explaining what the feature is detecting in more detail. This should be a single sentence, not a list of properties. You can phrase it as, the feature is detecting X, etc."
-{"- 'detailed_explanation': 'An extended explanation of what this featudre is detecting, including how the context before the marked tokens contributes to the feature's meaning. The explanation should be sufficient on its own to understand what the feature detects. Keep it to <5 concise sentences.'" if explanation else ""}
+- "brief_description": "A sentence expanding on the label, explaining what the feature is detecting in more detail. This should be a single sentence, not a list of properties. Please phrase this as: "This document contains X, discusses X, etc.", where X is the property.
+{"- 'detailed_explanation': 'An extended explanation of what this feature is detecting, including how the context before the marked tokens contributes to the feature's meaning. The explanation should be sufficient on its own to understand what the feature detects. Keep it to <5 concise sentences.'" if explanation else ""}
 
 Make sure your response is valid JSON that can be parsed directly.
 """

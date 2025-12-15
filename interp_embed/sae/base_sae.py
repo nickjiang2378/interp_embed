@@ -1,19 +1,23 @@
 import torch
 from abc import ABC, abstractmethod
 from enum import Enum
-from .utils import ensure_loaded
+from .utils import ensure_loaded, process_device_config
 
 class BaseSAE(ABC):
-  def __init__(self, truncate = True, use_assistant_role: bool = True):
+  def __init__(self, truncate = True, use_assistant_role: bool = True, device: str = "cpu"):
     self.loaded = False
     self.tokenizer = None
     self.truncate = truncate
     self._feature_labels = dict()
     self.use_assistant_role = use_assistant_role
+    self.model_device, self.sae_device = process_device_config(device)
 
   @classmethod
   def from_metadata(cls, metadata):
     return cls(**metadata)
+
+  def set_device(self, device: str):
+    self.model_device, self.sae_device = process_device_config(device)
 
   def metadata(self):
     return {
@@ -100,5 +104,5 @@ class BaseSAE(ABC):
 
 class SAEType(Enum):
     LOCAL = "local"
-    GOODFIRE_API = "goodfire_api"
     GOODFIRE = "goodfire"
+    GOODFIRE_API = "goodfire_api"

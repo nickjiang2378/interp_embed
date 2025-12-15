@@ -1,6 +1,5 @@
 import numpy as np
 from sae_lens import SAE as SAEModel
-from transformer_lens import HookedTransformer
 import torch
 from scipy.sparse import csr_matrix
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
@@ -12,9 +11,9 @@ from .base_sae import BaseSAE, SAEType
 from .utils import process_device_config, ensure_loaded, try_to_load_feature_labels, goodfire_sae_loader, store_activations_hook
 
 class LocalSAE(BaseSAE):
-  def __init__(self, sae_id = "blocks.8.hook_resid_pre", release = "gpt2-small-res-jb", device = "cuda:0", **kwargs):
+  def __init__(self, sae_id = "blocks.8.hook_resid_pre", release = "gpt2-small-res-jb", **kwargs):
+
     super().__init__(**kwargs)
-    self.model_device, self.sae_device = process_device_config(device)
     self.sae_id = sae_id
     self.release = release
     self.model = None
@@ -35,6 +34,8 @@ class LocalSAE(BaseSAE):
     return parent_metadata
 
   def load_models(self):
+    from transformer_lens import HookedTransformer
+
     print("Loading SAE...")
     self.sae = SAEModel.from_pretrained(
       release=self.release,  # see other options in sae_lens/pretrained_saes.yaml
@@ -79,11 +80,10 @@ class LocalSAE(BaseSAE):
     self.model = None
 
 class GoodfireSAE(BaseSAE):
-  def __init__(self, variant_name: str = "Llama-3.1-8B-Instruct-SAE-l19", device = "cuda:0", quantize = False, **kwargs):
+  def __init__(self, variant_name: str = "Llama-3.1-8B-Instruct-SAE-l19", quantize = False, **kwargs):
     super().__init__(**kwargs)
     self.variant_name = variant_name
     self.quantize = quantize
-    self.model_device, self.sae_device = process_device_config(device)
     self.activations = dict()
     self.activation_hook_handle = None
 

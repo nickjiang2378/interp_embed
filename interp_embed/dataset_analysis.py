@@ -1,7 +1,6 @@
 from tqdm.auto import tqdm
 import uuid
 import numpy as np
-import pickle
 import pandas as pd
 import math
 from scipy.sparse import csr_matrix, vstack
@@ -17,7 +16,7 @@ from .utils.helpers import (
     compute_token_count,
 )
 
-from .saes.load_sae import load_sae_from_metadata
+from .sae.load_sae import load_sae_from_metadata
 from .llm.utils import get_llm_client, call_async_llm, extract_json_from_response
 from .llm.prompts import build_labeling_prompt, build_scoring_prompt
 from .utils.data_models import FeatureLabelResponse, SingleSampleScoringResponse
@@ -155,7 +154,7 @@ class Dataset():
         safe_save_pkl(save_dict, file_path)
 
     @classmethod
-    def load_from_file(cls, file_path, resume = False, batch_size = 8):
+    def load_from_file(cls, file_path, resume = False, batch_size = 8, device = "cuda:0"):
         """
         Load a Dataset from saved parameters.
 
@@ -179,9 +178,11 @@ class Dataset():
                 ))
 
         # Create and return the Dataset
+        sae = load_sae_from_metadata(params['sae_metadata'])
+        sae.set_device(device)
         dataset = cls(
             data=params['dataset'],
-            sae=load_sae_from_metadata(params['sae_metadata']),
+            sae=sae,
             dataset_description=params['dataset_description'],
             rows=rows,
             field=params['field'],
@@ -210,6 +211,7 @@ class Dataset():
         for row in self.rows:
             if row is not None:
                 d_sae = row.latents(compress = True).shape[1]
+                break
 
         if aggregation_method == "all":
             all_activations = []
@@ -370,7 +372,7 @@ class Dataset():
 
         sorted_data = [entry[0] for entry in sorted_entries]
         sorted_dataset_rows = [self.rows[entry[4]] for entry in sorted_entries]
-        return Dataset(sorted_data, self.sae, self.dataset_description, rows=sorted_dataset_rows, feature_labels=self.feature_labels(), field=self.field) # TODO: columns of dataset rows won't be updated.
+        return Dataset(sorted_data, self.sae, self.dataset_description, rows=sorted_dataset_rows, feature_labels=self.feature_labels(), field=self.field, compute_activations = False) # TODO: columns of dataset rows won't be updated.
 
     def filter_na_rows(self):
         selected_indices = [ind for ind in range(len(self.rows)) if self.rows[ind] is not None]
@@ -417,7 +419,7 @@ class Dataset():
         elif isinstance(index, slice):
             selected_data = self.dataset.iloc[index]
             selected_activations = self.rows[index]
-            new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field)
+            new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field, compute_activations = False)
             return new_dataset
         else:
             if isinstance(index, list):
@@ -426,12 +428,12 @@ class Dataset():
                 selected_data = self.dataset[index]
                 true_indices = index.index[index] if isinstance(index, pd.Series) else np.where(index)[0]
                 selected_activations = [self.rows[i] for i in true_indices]
-                new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field)
+                new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field, compute_activations = False)
                 return new_dataset
             elif isinstance(index, np.ndarray) and index.dtype == int:
                 selected_data = self.dataset.iloc[index]
                 selected_activations = [self.rows[i] for i in index]
-                new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field)
+                new_dataset = Dataset(selected_data, sae=self.sae, dataset_description=self.dataset_description, rows=selected_activations, feature_labels=self.feature_labels(), field=self.field, compute_activations = False)
                 return new_dataset
             else:
                 raise TypeError(f"Indexing with {type(index)} is not supported")

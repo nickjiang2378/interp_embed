@@ -23,7 +23,7 @@ First, create a dataset object. We currently support SAEs from SAELens (`LocalSA
 
 ```python
 from interp_embed import Dataset
-from interp_embed.saes.local_sae import GoodfireSAE
+from interp_embed.sae import GoodfireSAE
 import pandas as pd
 
 # 1. Load a Goodfire SAE or SAE supported through the SAELens package
