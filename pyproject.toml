@@ -42,4 +42,9 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["interp_embed", "interp_embed.saes", "interp_embed.llm", "interp_embed.utils"]
+packages = ["interp_embed", "interp_embed.sae", "interp_embed.llm", "interp_embed.utils"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
