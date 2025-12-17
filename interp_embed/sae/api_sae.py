@@ -79,13 +79,16 @@ class GoodfireApiSAE(ApiSAE):
     parent_metadata["use_assistant_role"] = self.use_assistant_role
     return parent_metadata
 
+  def load_feature_labels(self):
+    self._feature_labels = try_to_load_feature_labels(f"goodfire/{self.variant.base_model}.json")
+    if self._feature_labels:
+      self._feature_labels = {int(key): value for key, value in self._feature_labels.items()} # Convert keys to ints
+
   def load_models(self):
     # Load the tokenizer
     try:
       self.tokenizer = AutoTokenizer.from_pretrained(self.variant.base_model)
-      self._feature_labels = try_to_load_feature_labels(f"goodfire/{self.variant.base_model}.json")
-      if self._feature_labels:
-        self._feature_labels = {int(key): value for key, value in self._feature_labels.items()} # Convert keys to ints
+
     except Exception as e:
       raise Exception(f"Failed to load tokenizer for variant {self.variant.base_model}: {e}")
 

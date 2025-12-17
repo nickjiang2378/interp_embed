@@ -27,7 +27,11 @@ class BaseSAE(ABC):
 
   def load(self):
     self.load_models()
+    self.load_feature_labels()
     self.loaded = True
+
+  def load_feature_labels(self):
+    pass
 
   def feature_labels(self):
     return self._feature_labels

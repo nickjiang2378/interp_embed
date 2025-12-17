@@ -8,7 +8,7 @@ from functools import partial
 import warnings
 
 from .base_sae import BaseSAE, SAEType
-from .utils import process_device_config, ensure_loaded, try_to_load_feature_labels, goodfire_sae_loader, store_activations_hook
+from .utils import process_device_config, ensure_loaded, try_to_load_feature_labels, goodfire_sae_loader, store_activations_hook, get_goodfire_config
 
 class LocalSAE(BaseSAE):
   def __init__(self, sae_id = "blocks.8.hook_resid_pre", release = "gpt2-small-res-jb", **kwargs):
@@ -86,6 +86,7 @@ class GoodfireSAE(BaseSAE):
     self.quantize = quantize
     self.activations = dict()
     self.activation_hook_handle = None
+    self.config = get_goodfire_config(variant_name)
 
   def metadata(self):
     parent_metadata = super().metadata()
@@ -100,42 +101,29 @@ class GoodfireSAE(BaseSAE):
     })
     return parent_metadata
 
+  def load_feature_labels(self):
+    self._feature_labels = try_to_load_feature_labels(self.config["feature_labels_file"])
+
+    # Load the feature labels
+    if self._feature_labels:
+      self._feature_labels = {int(key): value for key, value in self.feature_labels().items()} # Convert keys to ints
+
   def load_models(self):
     # Load the model, sae, and tokenizer
     bnb_config = BitsAndBytesConfig(
         load_in_8bit = True,
         bnb_8bit_compute_dtype=torch.float32
     )
-    # Mapping of variant names to associated config
-    variant_configs = {
-        # "Llama-3.3-70B-Instruct-SAE-l50": {
-        #     "hf_model": "meta-llama/Llama-3.3-70B-Instruct",
-        #     "goodfire_release": "Goodfire/Llama-3.3-70B-Instruct-SAE-l50",
-        #     "sae_id": "Llama-3.3-70B-Instruct-SAE-l50.pt",
-        #     "feature_labels_file": "goodfire/meta-llama/Llama-3.3-70B-Instruct.json",
-        #     "device_map": self.model_device
-        # },
-        "Llama-3.1-8B-Instruct-SAE-l19": {
-            "hf_model": "meta-llama/Llama-3.1-8B-Instruct",
-            "goodfire_release": "Goodfire/Llama-3.1-8B-Instruct-SAE-l19",
-            "sae_id": "Llama-3.1-8B-Instruct-SAE-l19.pth",
-            "feature_labels_file": "goodfire/meta-llama/Llama-3.1-8B-Instruct.json",
-            "device_map": self.model_device
-        }
-    }
-
-    if self.variant_name not in variant_configs:
-        raise ValueError(f"Variant {self.variant_name} not supported")
 
     if self.quantize:
       warnings.warn("Quantizing the language model may cause feature activations to be less accurate.")
 
-    config = variant_configs[self.variant_name]
+    config = get_goodfire_config(self.variant_name)
 
     self.model = AutoModelForCausalLM.from_pretrained(
         config["hf_model"],
         quantization_config=bnb_config if self.quantize else None,
-        device_map=config["device_map"]
+        device_map=self.model_device
     )
 
     # Add hooks to the model
@@ -156,11 +144,6 @@ class GoodfireSAE(BaseSAE):
         device=self.sae_device,
         converter=goodfire_sae_loader,
     )
-    self._feature_labels = try_to_load_feature_labels(config["feature_labels_file"])
-
-    # Load the feature labels
-    if self._feature_labels:
-      self._feature_labels = {int(key): value for key, value in self.feature_labels().items()} # Convert keys to ints
 
     self.tokenizer.pad_token = self.tokenizer.eos_token
 

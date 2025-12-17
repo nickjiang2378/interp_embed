@@ -143,6 +143,23 @@ def goodfire_sae_loader(
 
     return cfg_dict, state_dict, None
 
+def get_goodfire_config(sae_id: str):
+  if sae_id == "Llama-3.1-8B-Instruct-SAE-l19":
+    return {
+      "hf_model": "meta-llama/Llama-3.1-8B-Instruct",
+      "goodfire_release": "Goodfire/Llama-3.1-8B-Instruct-SAE-l19",
+      "sae_id": "Llama-3.1-8B-Instruct-SAE-l19.pth",
+      "feature_labels_file": "goodfire/meta-llama/Llama-3.1-8B-Instruct.json",
+    }
+  elif sae_id == "Llama-3.3-70B-Instruct-SAE-l50":
+    return {
+      "hf_model": "meta-llama/Llama-3.3-70B-Instruct",
+      "goodfire_release": "Goodfire/Llama-3.3-70B-Instruct-SAE-l50",
+      "sae_id": "Llama-3.3-70B-Instruct-SAE-l50.pt",
+      "feature_labels_file": "goodfire/meta-llama/Llama-3.3-70B-Instruct.json",
+    }
+  else:
+    raise ValueError(f"Invalid SAE ID: {sae_id}")
 
 def store_activations_hook(model, input, output, activations, name):
     # Store the output activation
