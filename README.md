@@ -1,7 +1,15 @@
-# InterpEmbed
+<p align="center">
+  <h1 align="center">Interpretable Embeddings with Sparse Autoencoders: A Data Analysis Toolkit</h1>
+</p>
 
-`interp_embed` turns unstructured text datasets into interpretable embeddings using sparse autoencoders (SAEs). Each dimension of the embedding corresponds to a human-understandable concept (e.g. a "feature"), such as tone, topic, or reasoning style, making it easy to find granular insights about large corpora. The library lets you compute, store, and analyze these features for tasks like dataset comparison, bias detection, and targeted clustering.
+InterpEmbed is an exploratory toolkit for analyzing unstructured text datasets with sparse autoencoders (SAEs).
+- [Read our paper](https://arxiv.org/abs/2512.10092) or the [project page](interp-embed.com)
+- Example uses: dataset comparisons, bias detection, controllable clustering (notebooks coming soon..)
+- See our [case studies](interp-embed.com) on qualitatively comparing frontier models and debugging post-training datasets.
 
+
+
+For code to reproduce our paper, see the `paper/` directory.
 ## Setup
 
 To install:
@@ -75,7 +83,10 @@ top_documents = dataset.top_documents_for_feature(feature = 65478)
 For analyses (e.g. dataset diffing, correlations) done on example datasets, see the `examples/` folder.
 
 ## How does this work?
+![InterpEmbed Method Overview](assets/method.png)
 
-To embed a document, we pass the data into a "reader" LLM and use a sparse autoencoder (SAE) to decompose its internal representation into interpretable concepts known as "features". A SAE produces a sparse, high-dimensional vector (e.g. hundreds of thousands of dimensions) of feature activations per token that we aggregate into a single document embedding.
+Given a dataset of text documents, we pass each document into a "reader" LLM and compute the SAE latents with a pretrained SAE (i.e. at a specific layer). For each document, we max-pool the latents across tokens to produce a single, high-dimensional, interpretable embedding whose dimensions map to granular concepts like tone, reasoning style, etc.
+
+InterpEmbed efficiently computes and stores these embeddings for use in downstream analysis tasks (e.g. dataset comparisons). It is well-suited for detecting unknown unknowns in datasets given the large hypothesis space of SAEs.
 
 For a brief introduction to sparse autoencoders, see [here](https://www.lesswrong.com/posts/8YnHuN55XJTDwGPMr/a-gentle-introduction-to-sparse-autoencoders) and [here](https://adamkarvonen.github.io/machine_learning/2024/06/11/sae-intuitions.html).
