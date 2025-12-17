@@ -39,7 +39,8 @@ dependencies = [
     "transformer-lens>=1.0.0",
     "huggingface-hub>=0.16.0",
     "pydantic>=2.0.0",
+    "matplotlib>=3.10.8",
 ]
 
 [tool.setuptools]
-packages = ["interp_embed", "interp_embed.saes", "interp_embed.llm", "interp_embed.utils"]
+packages = ["interp_embed", "interp_embed.sae", "interp_embed.llm", "interp_embed.utils"]
