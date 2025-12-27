@@ -3,9 +3,9 @@
 </p>
 
 InterpEmbed is an exploratory toolkit for analyzing unstructured text datasets with sparse autoencoders (SAEs).
-- [Read our paper](https://arxiv.org/abs/2512.10092) or the [project page](interp-embed.com)
-- Example uses: dataset comparisons, bias detection, controllable clustering (notebooks coming soon..)
-- See our [case studies](interp-embed.com) on qualitatively comparing frontier models and debugging post-training datasets.
+- [Read our paper](https://arxiv.org/abs/2512.10092) or the [project page](https://interp-embed.com)
+- Example uses: dataset comparisons, bias detection, controllable clustering (see `examples/`)
+- See our [case studies](https://interp-embed.com) on qualitatively comparing frontier models and debugging post-training datasets.
 
 
 
